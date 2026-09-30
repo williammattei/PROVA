@@ -1,0 +1,373 @@
+/* ---------------------------------------------------------------------
+   DISPLAY: como o elemento se comporta na página
+   ---------------------------------------------------------------------
+   block        Ocupa a linha inteira e quebra linha antes e depois.
+                Aceita width, height, margin e padding.
+                (padrão de: div, p, h1 a h6, ul, li*)
+   inline       Fica no meio do texto, sem quebrar linha.
+                IGNORA width, height e margin/padding de cima e baixo.
+                (padrão de: span, a, strong, em, img)
+   inline-block Fica na linha como o inline, mas aceita width, height,
+                margin e padding como o block.
+   none         Remove o elemento da página (não ocupa espaço).
+                Diferente de visibility: hidden, que esconde mas
+                mantém o espaço.
+   flex         O elemento vira um container flexível: os filhos diretos
+                ficam lado a lado (ou em coluna). Ocupa a linha inteira.
+   inline-flex  Igual ao flex, mas o container fica na linha (como inline).
+   grid         O elemento vira uma grade de linhas e colunas.
+   inline-grid  Igual ao grid, mas o container fica na linha.
+                ou célula.
+   list-item    Comporta-se como item de lista (com marcador). Padrão do li.
+*/
+
+
+/* ---------------------------------------------------------------------
+   FLEXBOX: COMO USAR
+   ---------------------------------------------------------------------
+   - display: flex vai no PAI. Quem é organizado são os FILHOS DIRETOS
+     (netos não são afetados).
+   - Existem dois eixos:
+        EIXO PRINCIPAL   = horizontal (padrão), direção em que os itens
+                           se enfileiram.
+        EIXO SECUNDÁRIO  = vertical (padrão), perpendicular ao principal.
+   - justify-content age no eixo PRINCIPAL.
+   - align-items     age no eixo SECUNDÁRIO.
+   - Com flex-direction: column os eixos se INVERTEM:
+        justify-content passa a agir na VERTICAL
+        align-items     passa a agir na HORIZONTAL
+*/
+
+
+/* ---------------------------------------------------------------------
+   JUSTIFY-CONTENT (eixo principal)
+   ---------------------------------------------------------------------
+   Desenho: |...| é o container, [A][B][C] são os itens.
+
+   flex-start     |[A][B][C]            |  (padrão) encostados no início
+   flex-end       |            [A][B][C]|  encostados no fim
+   center         |      [A][B][C]      |  no centro
+   space-between  |[A]      [B]      [C]|  primeiro e último nas pontas,
+                                           espaço igual entre os itens
+   space-around   | [A]    [B]    [C]   |  espaço igual ao redor de cada
+                                           item (as pontas ficam com metade)
+   space-evenly   |  [A]   [B]   [C]    |  todos os espaços iguais,
+                                           inclusive nas pontas
+
+   Menos usados: start, end, left, right, normal, stretch.
+*/
+
+
+/* ---------------------------------------------------------------------
+   ALIGN-ITEMS (eixo secundário)
+   ---------------------------------------------------------------------
+   (considerando o container com altura maior que os itens)
+
+   stretch     (padrão) os itens esticam até preencher a altura do
+               container, se não tiverem height próprio
+   flex-start  itens encostados no topo
+   flex-end    itens encostados embaixo
+   center      itens no meio, na vertical
+   baseline    alinha pela linha de base do texto (útil com letras de
+               tamanhos diferentes lado a lado)
+
+   Menos usados: start, end, self-start, self-end, normal.
+*/
+
+
+/* ---------------------------------------------------------------------
+   OUTRAS PROPRIEDADES DO FLEX
+   ---------------------------------------------------------------------
+   No PAI (container):
+   flex-direction  row (padrão) | row-reverse | column | column-reverse
+                   define a direção do eixo principal
+   flex-wrap       nowrap (padrão) | wrap | wrap-reverse
+                   com wrap, os itens que não cabem descem para a
+                   linha de baixo
+   gap             espaço entre os itens (gap: 10px)
+   align-content   alinha as LINHAS quando há wrap e mais de uma linha
+                   (aceita os valores do justify-content)
+
+   No FILHO (item):
+   flex: 1         o item cresce e ocupa o espaço que sobrar
+                   (se dois filhos têm flex: 1, dividem o espaço igual;
+                   flex: 2 ocupa o dobro de flex: 1)
+*/
+
+/* ===================== BASE ===================== */
+* {
+    margin: 0;              /* tira a margem padrão do navegador */
+    padding: 0;             /* tira o espaçamento interno padrão */
+    box-sizing: border-box; /* padding e borda ficam DENTRO do tamanho definido */
+}
+
+body {
+    font-family: Arial, sans-serif; /* tipo de letra */
+    background-color: #FAF7F2;      /* bege claro de fundo */
+    color: #5B564C;                 /* cor do texto comum */
+    line-height: 1.6;               /* altura da linha */
+}
+
+a {
+    text-decoration: none; /* tira o sublinhado dos links */
+    color: inherit;        /* usa a cor do elemento pai */
+}
+
+ul {
+    list-style: none;      /* tira as bolinhas das listas */
+}
+
+h1, h2, h3 {
+    color: #2B2A28;        /* títulos em cinza bem escuro */
+}
+
+/* Caixa que limita a largura e centraliza o conteúdo */
+.conteudo {
+    width: 992px;          /* largura fixa */
+    margin: 0 auto;        /* auto nas laterais = centraliza a caixa */
+}
+
+
+/* ===================== CABEÇALHO ===================== */
+.cabecalho {
+    border-bottom: 1px solid #EDE3D3;  /* linha fina embaixo (espessura | estilo | cor) */
+}
+
+.linhacabecalho {
+    display: flex;                   /* nome e menu lado a lado */
+    justify-content: space-between;  /* um em cada ponta */
+    align-items: center;             /* centraliza na vertical */
+    height: 72px;                    /* altura da barra */
+}
+
+#titulosite {             /* # = id: só o elemento com id="titulosite" */
+    font-size: 19px;      /* tamanho da letra do nome (em pixels) */
+}
+
+.menu {
+    display: flex;   /* os h3 ficam lado a lado */
+    gap: 32px;       /* espaço entre os links */
+}
+
+.menu h3 {                /* só os h3 que estão DENTRO de .menu */
+    font-size: 16px;      /* tamanho da letra dos links do menu */
+    font-weight: normal;  /* h3 é negrito por padrão; aqui tiramos */
+    color: #5B564C;       /* cinza médio (texto secundário) */
+}
+
+.menu h3:hover {          /* :hover = quando o mouse está em cima */
+    color: #3F6C51;       /* fica verde com o mouse em cima */
+}
+
+
+/* ===================== APRESENTAÇÃO ===================== */
+.apresentacao {
+    display: flex;
+    flex-direction: column;  /* itens um embaixo do outro */
+    align-items: center;     /* centraliza na horizontal */
+    text-align: center;      /* centraliza o texto */
+    padding: 72px 0 88px;    /* cima | laterais | baixo */
+}
+
+#foto {
+    margin-bottom: 26px;     /* espaço entre a foto e o nome */
+}
+
+#nome {
+    font-size: 40px;         /* letra grande: é o título principal */
+    margin-bottom: 8px;      /* espaço entre o nome e o cargo */
+}
+
+#cargo {
+    color: #D97757;          /* terracota */
+    font-size: 18px;         /* tamanho da letra do cargo */
+    margin-bottom: 24px;     /* espaço entre o cargo e o parágrafo */
+}
+
+.apresentacao p {            /* só os p que estão DENTRO de .apresentacao */
+    width: 480px;            /* limita a largura do texto */
+    margin-bottom: 32px;
+}
+
+
+/* ===================== BOTÕES ===================== */
+.botoes {
+    display: flex;
+    gap: 16px;               /* espaço entre os botões */
+}
+
+#botaoverde {
+    background-color: #3F6C51;   /* botão preenchido */
+    color: white;                /* letra branca, para contrastar com o fundo verde */
+    padding: 12px 26px;          /* cima/baixo | laterais */
+    border-radius: 30px;         /* formato de pílula */
+    border: 1px solid #3F6C51;   /* contorno da mesma cor do fundo: deixa os dois botões do mesmo tamanho */
+    font-size: 15px;             /* tamanho da letra do botão */
+    font-weight: bold;           /* negrito */
+}
+
+#botaoborda {
+    color: #3F6C51;              /* só letra e contorno; o fundo é transparente */
+    padding: 12px 26px;          /* cima/baixo | laterais: espaço entre o texto e a borda */
+    border-radius: 30px;         /* formato de pílula */
+    border: 1px solid #3F6C51;   /* contorno verde: é ele que aparece, já que não tem fundo */
+    font-size: 15px;             /* tamanho da letra do botão */
+    font-weight: bold;           /* negrito */
+}
+
+
+/* ===================== SOBRE MIM ===================== */
+.sobre {
+    background-color: white;     /* faixa branca entre duas faixas bege */
+    padding: 80px 0;             /* 80px em cima e embaixo, 0 nas laterais */
+}
+
+.colunas {
+    display: flex;               /* duas colunas lado a lado */
+    gap: 56px;                   /* espaço entre elas */
+}
+
+.informacao {
+    width: 546px;                /* coluna da esquerda (texto) */
+}
+
+.habilidades {
+    width: 390px;                /* coluna da direita (tags) */
+}
+
+.informacao h2 {                 /* só o h2 que está DENTRO de .informacao */
+    font-size: 28px;             /* tamanho da letra do título "Sobre mim" */
+    margin-bottom: 18px;         /* espaço entre o título e o parágrafo */
+}
+
+.informacao p {                  /* só o p que está DENTRO de .informacao */
+    font-size: 15px;             /* letra um pouco menor que o padrão (16px) */
+    line-height: 26px;           /* altura de cada linha do parágrafo */
+}
+
+.habilidades h3 {                /* só o h3 que está DENTRO de .habilidades */
+    font-size: 18px;             /* tamanho da letra do título "Habilidades" */
+    margin-bottom: 18px;         /* espaço entre o título e as tags */
+}
+
+.habilidades ul {                /* só a lista que está DENTRO de .habilidades */
+    display: flex;               /* tags lado a lado */
+    flex-wrap: wrap;             /* as que não cabem descem para a linha de baixo */
+    gap: 10px;                   /* espaço entre as tags (horizontal e vertical) */
+}
+
+.habilidades li {                /* cada item da lista = uma tag */
+    background-color: #EFE7DB;   /* bege das tags de habilidade */
+    color: #3F6C51;              /* letra verde */
+    padding: 8px 16px;           /* 8px cima/baixo | 16px laterais: espaço dentro da tag */
+    border-radius: 20px;         /* cantos bem arredondados (pílula) */
+    font-size: 14px;             /* letra pequena */
+    font-weight: bold;           /* negrito */
+}
+
+
+/* ===================== PROJETOS ===================== */
+.projetos {
+    padding: 88px 0;             /* 88px em cima e embaixo, 0 nas laterais */
+}
+
+.title {
+    text-align: center;          /* centraliza título e frase */
+    margin-bottom: 52px;         /* espaço até os cards */
+}
+
+.title h2 {                      /* só o h2 que está DENTRO de .title */
+    font-size: 30px;             /* tamanho da letra do título "Projetos" */
+    margin-bottom: 8px;          /* espaço entre o título e a frase */
+}
+
+.cards {
+    display: flex;               /* cards lado a lado */
+    gap: 32px;
+}
+
+.card {
+    flex: 1;                     /* os dois cards com o mesmo tamanho */
+    background-color: white;     /* fundo branco do card */
+    border: 1px solid #EDE3D3;   /* contorno fino e claro */
+    border-radius: 16px;         /* cantos arredondados */
+    overflow: hidden;            /* corta o que passar dos cantos arredondados */
+}
+
+.card img {                      /* só as imagens que estão DENTRO de .card */
+    display: block;              /* imagem é "inline" e deixa uma folguinha embaixo; block tira */
+}
+
+.textocard {
+    padding: 24px;               /* espaço entre a borda do card e o texto */
+}
+
+.textocard h3 {                  /* só o h3 que está DENTRO de .textocard */
+    font-size: 18px;             /* tamanho da letra do nome do projeto */
+    margin-bottom: 8px;          /* espaço entre o nome e a descrição */
+}
+
+.textocard p {                   /* só o p que está DENTRO de .textocard */
+    font-size: 14px;             /* letra pequena para a descrição */
+    line-height: 23px;           /* altura de cada linha */
+    margin-bottom: 18px;         /* espaço entre a descrição e as tags */
+}
+
+.textocard ul {                  /* só a lista que está DENTRO de .textocard */
+    display: flex;               /* tags lado a lado */
+    gap: 8px;                    /* espaço entre as tags */
+}
+
+.textocard li {                  /* cada item da lista = uma tag do projeto */
+    background-color: #F1EAE3;   /* bege das tags de projeto */
+    color: #8B4B3A;              /* terracota escuro */
+    padding: 5px 12px;           /* 5px cima/baixo | 12px laterais: espaço dentro da tag */
+    border-radius: 20px;         /* cantos bem arredondados (pílula) */
+    font-size: 12px;             /* letra bem pequena */
+    font-weight: bold;           /* negrito */
+}
+
+
+/* ===================== RODAPÉ / CONTATO ===================== */
+.rodape {
+    background-color: #2B2A28;   /* fundo marrom escuro */
+    color: #C9BDA9;              /* letra bege acinzentada (clara, para contrastar) */
+    text-align: center;          /* centraliza todo o texto do rodapé */
+    padding: 88px 0 70px;        /* cima | laterais | baixo */
+}
+
+.rodape h2 {                     /* só o h2 que está DENTRO de .rodape */
+    color: white;                /* troca o cinza escuro dos títulos */
+    font-size: 28px;             /* tamanho da letra do título */
+    margin-bottom: 12px;         /* espaço entre o título e a frase */
+}
+
+.rodape p {                      /* só o p que está DENTRO de .rodape */
+    width: 420px;                /* limita a largura da frase */
+    margin: 0 auto 36px;         /* auto nas laterais centraliza */
+}
+
+.contatos a {                    /* só os links que estão DENTRO de .contatos */
+    display: flex;               /* ícone e texto lado a lado */
+    justify-content: center;     /* centraliza cada linha */
+    align-items: center;         /* alinha ícone e texto na vertical */
+    gap: 10px;                   /* espaço entre o ícone e o texto */
+    color: white;                /* letra branca */
+    font-size: 15px;             /* tamanho da letra dos contatos */
+    margin-bottom: 14px;         /* espaço entre um contato e outro */
+}
+
+.contatos a:hover {              /* :hover = quando o mouse está em cima */
+    text-decoration: underline;  /* sublinha com o mouse em cima */
+}
+
+.contatos img {                  /* só as imagens que estão DENTRO de .contatos */
+    filter: invert(1);           /* os ícones são pretos; invert(1) inverte as cores e deixa brancos */
+}
+
+.rodape small {                  /* só o small que está DENTRO de .rodape */
+    display: block;              /* small é inline e ignora margin; block resolve */
+    margin-top: 40px;            /* afasta o copyright dos contatos */
+    font-size: 13px;             /* letra pequena */
+    color: #8B8578;              /* texto apagado */
+}
